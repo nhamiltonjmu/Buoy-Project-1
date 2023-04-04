@@ -10,7 +10,7 @@ select_stmt = "SELECT * FROM sensordata"
 cursor.execute(select_stmt)
 records = cursor.fetchall()
 
-device = XbeeDevice("SERIAL")
+device = XBeeDevice("SERIAL")
 device.close()
 device.open()
 
