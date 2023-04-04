@@ -1,0 +1,28 @@
+import sqlite3
+import time
+from digi.xbee.devices import XbeeDevice, RemoteXBeeDevice, XBee64BitAddress
+
+conn = sqlite3.connect('SensorData')
+
+cursor = conn.cursor()
+
+select_stmt = "SELECT * FROM sensordata"
+cursor.execute(select_stmt)
+records = cursor.fetchall()
+
+device = XbeeDevice("SERIAL")
+device.close()
+device.open()
+
+time.sleep(1)
+
+for records in records:
+    record_str = ','.join([str(value) for value in record])
+
+    device.send_data_broadcast(record_str.encode())
+
+    time.sleep(10)
+
+device.close()
+cursor.close()
+conn.close()
