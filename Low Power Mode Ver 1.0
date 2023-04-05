@@ -1,0 +1,26 @@
+import serial
+import time
+# PLACEHOLDER FOR BATTERY PERCENTAGE, CHANGE LATER
+batterypercentage = 20
+# Open a serial connection with the radio module
+ser = serial.Serial('COM8', 9600, timeout=1)
+ser.close()
+ser.open()
+while (batterypercentage < 20):
+    ser.write(b'+++')
+    time.sleep(3)
+    ser.write(b'ATPL0\r\n')
+    ser.write(b'ATWR\r\n')
+    ser.write(b'ATCN\r\n')
+    print("low power mode activated")
+    response = ser.read(100)
+    print(response)
+    ser.close()
+else:
+    ser.write(b'+++')
+    time.sleep(3)
+    ser.write(b'ATPL2\r\n')
+    ser.write(b'ATWR\r\n')
+    ser.write(b'ATCN\r\n')
+    print("no longer low power")
+    ser.close()
