@@ -16,7 +16,7 @@ device.open()
 
 time.sleep(1)
 
-for records in records:
+for record in records:
     record_str = ','.join([str(value) for value in record])
 
     device.send_data_broadcast(record_str.encode())
