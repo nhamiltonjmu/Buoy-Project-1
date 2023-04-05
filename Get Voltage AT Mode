@@ -1,6 +1,7 @@
 import serial
 import time
 import re
+# placeholder for our batter percentage
 batterypercentage = 19
 # Open a serial connection with the radio module
 ser = serial.Serial('COM8', 9600, timeout=1)
@@ -11,10 +12,14 @@ while (batterypercentage < 20):
     time.sleep(3)
     ser.write(b'AT%V\r\n')
     response = ser.read(100)
+    # read the voltage response from the radio
     response = response.decode()
+    # get rid of unneccessary characters from the return
     for char in '\OKr':
         response = response.replace(char,'')
+    # get the numeric values from the return
     decimal_value = int(response, 16)
+    # convert millivolts to volts
     result = decimal_value / 1000
     print(result, "Volts")
     ser.close()
