@@ -5,7 +5,7 @@ from digi.xbee.devices import XBeeDevice
 from digi.xbee.models.mode import NeighborDiscoveryMode
 from digi.xbee.models.options import DiscoveryOptions
 
-xbee = XBeeDevice("COM6", 9600)
+xbee = XBeeDevice("/dev/ttyUSB#", 9600)
 xbee.open()
 
 # Get the network.
@@ -15,6 +15,6 @@ print(xnet)
 # Start the discovery process and wait for it to be over.
 xnet.start_discovery_process(deep=True, n_deep_scans=1)
 while xnet.is_discovery_running():
-time.sleep(0.5)
+  time.sleep(0.5)
 
 print("%s" % '\n'.join(map(str, xnet.get_connections())))
