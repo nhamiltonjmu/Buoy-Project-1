@@ -25,9 +25,8 @@ if (dz == cz):
 else:
     print("encoding unsuccessful")
 
-#might need driver to convert output of Adafruit module to readable USB com port
 #add in code to search for USB...
-serial_port_name="COM9"
+serial_port_name="COM12"
 
 #create serial instance to talk with USB GPS
 uart = serial.Serial(serial_port_name, baudrate=9600, timeout=10)
@@ -76,8 +75,31 @@ while True:
             continue
 
         # print the lat and long to the PI screen up to 6 decimal places
-        print("Lat: {0:.6f}".format(gps.latitude))
-        print("Long: {0:.6f}".format(gps.longitude))
+        #print("Lat: {0:.6f}".format(gps.latitude))
+        #print("Long: {0:.6f}".format(gps.longitude))
+
+        Lat = gps.latitude
+        Long = gps.longitude
+
+
+        def decimal_to_dms(Lat, Long):
+            lat_direction = 'N' if Lat >= 0 else 'S'
+            lon_direction = 'E' if Long >= 0 else 'W'
+
+            lat_deg = int(Lat)
+            lat_min = int((Lat - lat_deg) * 60)
+            lat_sec = int((((Lat - lat_deg) * 60) - lat_min) * 60)
+
+            lon_deg = int(Long)
+            lon_min = int((Long - lon_deg) * 60)
+            lon_sec = int((((Long - lon_deg) * 60) - lon_min) * 60)
+
+            return (lat_deg, lat_min, lat_sec, lat_direction), (lon_deg, lon_min, lon_sec, lon_direction)
+
+
+        lat_dms, lon_dms = decimal_to_dms(Lat, Long)
+        print("Latitude (DMS):", lat_dms)
+        print("Longitude (DMS):", lon_dms)
 
         ##prepare data for transmission through Radio connected via USB
 
